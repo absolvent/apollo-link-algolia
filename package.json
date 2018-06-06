@@ -1,19 +1,66 @@
 {
   "name": "apollo-link-algolia",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Query Algoila with Apollo",
   "main": "./src/index.js",
-  "repository": "git@github.com:janowsiany/apollo-link-algolia.git",
-  "author": "Jan Owsiany <jan.owsiany@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/absolvent/apollo-link-algolia.git"
+  },
+  "author": "Jan Owsiany <jan.owsiany@gmail.com>, Paweł Samsel <pawel.samsel@absolvent.pl",
   "license": "MIT",
   "private": false,
-  "dependencies": {
-    "algoliasearch-helper": "^2.24.0",
-    "apollo-link": "^1.2.1",
-    "apollo-utilities": "^1.0.11",
-    "graphql-anywhere": "^4.1.8"
-  },
   "peerDependencies": {
     "algoliasearch": "^3.26.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint src/ test/",
+    "lint:fix": "eslint --fix src/ test/",
+    "clean": "rimraf lib es",
+    "seed-algolia": "node test/helpers/algolia-seeder/seed-algolia.js",
+    "build": "npm run clean && npm run lint && npm run build:commonjs && npm run build:es",
+    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib --source-maps",
+    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es --source-maps"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.35",
+    "@babel/core": "^7.0.0-beta.39",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.35",
+    "@babel/plugin-transform-runtime": "^7.0.0-beta.35",
+    "@babel/preset-env": "^7.0.0-beta.35",
+    "@babel/preset-react": "^7.0.0-beta.35",
+    "algoliasearch": "^3.27.1",
+    "apollo-boost": "^0.1.7",
+    "apollo-client": "^2.3.2",
+    "babel-core": "^7.0.0-0",
+    "babel-eslint": "^8.0.0",
+    "babel-jest": "^22.1.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "chai": "^4.1.2",
+    "chai-enzyme": "^0.8.0",
+    "cross-env": "^5.1.6",
+    "dotenv": "^6.0.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "eslint": "^4.19.1",
+    "eslint-plugin-jest": "^21.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.3.0",
+    "eslint-plugin-unicorn": "^3.0.1",
+    "github-changes": "^1.1.2",
+    "graphql-tag": "^2.9.2",
+    "isomorphic-fetch": "^2.2.1",
+    "jest": "^21.3.0-beta.15",
+    "rimraf": "^2.6.2"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.35",
+    "algoliasearch-helper": "^2.24.0",
+    "apollo-link": "^1.2.2",
+    "apollo-utilities": "^1.0.11",
+    "graphql": "^0.13.2",
+    "graphql-anywhere": "^4.1.8"
   }
 }

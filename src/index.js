@@ -5,47 +5,47 @@ import { ApolloLink, Observable } from 'apollo-link'
 import { graphql } from 'graphql-anywhere/lib/async'
 
 const resolver = (fieldName, root, args, context, info) => {
-  const { directives } = info
+  const { directives } = info;
 
   if (!directives.algolia.index) {
     // todo
   }
 
-  const helper = algoliasearchHelper(context.client, directives.algolia.index)
+  const helper = algoliasearchHelper(context.client, directives.algolia.index);
 
   if (directives.algolia.query) {
     helper.setQuery(directives.algolia.query)
   }
 
   if (directives.algolia.aroundLatLng) {
-    helper.setQueryParameter('aroundLatLng', directives.algolia.aroundLatLng)
+    helper.setQueryParameter('aroundLatLng', directives.algolia.aroundLatLng);
   }
 
   if (directives.algolia.aroundRadius) {
-    helper.setQueryParameter('aroundRadius', directives.algolia.aroundRadius)
+    helper.setQueryParameter('aroundRadius', directives.algolia.aroundRadius);
   }
 
-  return helper.searchOnce().then(({ content: { hits }}) => hits || null)
-}
+  return helper.searchOnce().then(({ content: { hits }}) => hits || null);
+};
 
 export default class AlgoliaLink extends ApolloLink {
   constructor({ client }) {
-    super()
+    super();
     this.client = client
   }
 
   request(operation, forward) {
-    const isAlgoliaQuery = hasDirectives(['algolia'], operation.query)
+    const isAlgoliaQuery = hasDirectives(['algolia'], operation.query);
 
     if (!isAlgoliaQuery && forward) {
-      return forward(operation)
+      return forward(operation);
     }
 
     const context = {
       client: this.client,
       findType: directives => directives.algolia.type,
       mainDefinition: getMainDefinition(operation.query) // note: not used at the moment
-    }
+    };
 
     return new Observable(observer => {
       graphql(
@@ -56,7 +56,7 @@ export default class AlgoliaLink extends ApolloLink {
         operation.variables
       )
       .then(data => {
-        observer.next({ data })
+        observer.next({ data });
         observer.complete()
       })
       .catch(error => {
